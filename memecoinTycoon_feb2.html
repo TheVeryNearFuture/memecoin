@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+canvas {
+    border:5px solid #322449;
+    background-color: #ffffff
+}
+
+.gencoin-button {
+         width: 154px;
+         height: 62px;
+         background-image: url('/assets/Gencoin.png');
+         background-size: cover;
+         background-color: #ffffff;
+         border: none;
+         cursor: pointer;
+      }
+
+.launch-button {
+         width: 154px;
+         height: 62px;
+         background-image: url('/assets/Launch.png');
+         background-size: cover;
+         background-color: #ffffff;
+         border: none;
+         cursor: pointer;
+      }
+
+.pump-button {
+         width: 154px;
+         height: 62px;
+         background-image: url('/assets/Pump.png');
+         background-size: cover;
+         background-color: #ffffff;
+         border: none;
+         cursor: pointer;
+      }
+
+.promo-button {
+         width: 154px;
+         height: 62px;
+         background-image: url('/assets/Promo.png');
+         background-size: cover;
+         background-color: #ffffff;
+         border: none;
+         cursor: pointer;
+      }
+
+.dump-button {
+         width: 154px;
+         height: 62px;
+         background-image: url('/assets/Dump.png');
+         background-size: cover;
+         background-color: #ffffff;
+         border: none;
+         cursor: pointer;
+      }
+.txtfmt {
+    font-size: "16px";
+    font: "Arial";
+    color: "#322449";
+}
+</style>
+</head>
+<body>
+<!-- <body onload="startGame()"> -->
+<br>
+<!-- Trigger/Open The Modal -->
+<!-- <button id="myBtn">Open Modal</button> -->
+
+<!-- MODAL: Intro game + generate coing on button click-->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p><button class="gencoin-button" onmouseup="GenerateCoin()" ></button>
+        <br>
+        <br>
+        <p class="txtfmt">Coin: <input class="txtfmt" type="text" id="myCoin" value="-"></p>
+        <br>
+        <br>
+        <button class="launch-button" id="launchCoin" onmouseup="startGame()" ></button>
+      </p>
+    </div>
+  </div>
+
+
+
+<!-- script component allows javascript to be written -->
+<script>
+
+// set variables
+var myGamePiece;
+var myHolders = 0;
+var inflows = 0;
+var myProfit = 0;
+var myScore;
+var myMemecoinOptions = ['¥CHILLSOL', '¥ASSEREUM', '¥MUSTARDANO']
+
+
+const random = Math.floor(Math.random() * myMemecoinOptions.length);
+const trail = [];
+const pricehist = [];
+// var max_of_array = Math.max.apply(Math, pricehist);
+const xLabelArray = Array.from(Array(11), (_, i) => i + 1);
+const yLabelArray = Array.from({length: 9}, (_, i) => 900 - (i * 100));
+
+const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  trailingZeroDisplay: 'stripIfInteger'
+});
+
+let launchready = false;
+
+const launchbutton = document.getElementById('launchCoin');
+launchbutton.disabled = !launchready; // Button is disabled when testvar is false
+
+// Example of toggling testvar and updating button state
+function toggleLaunchButton() {
+    launchready = !launchready;
+    launchbutton.disabled = !launchready;
+}
+
+// (document).ready(function(){
+//         ("myModal").modal('show');
+//     });
+
+  // Page load event
+  window.onload = () => {
+  modal.style.display = "block";
+}
+
+// on load, new game piece component defined, gravity variable set, new score component defined, gamearea started
+function GenerateCoin() {
+    selectMemcoin()
+    toggleLaunchButton()
+}
+
+function startGame() {
+    modal.style.display = "none";
+    myGamePiece = new component(10, 10, "#322449", 0, 270);
+    myGamePiece.gravity = 0.05;
+    myScore = new component("16px", "Arial", "#322449", 33, 20, "text");
+    myHolderCount = new component("16px", "Arial", "#322449", 33, 38, "text");
+    myProfitCount = new component("16px", "Arial", "#322449", 33, 56, "text");
+
+    // myFrame = new component("12px", "Arial", "#322449", 20, 100, "text");
+    myGameArea.start();
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        this.font = 'bold 16px Arial, sans-serif';
+        },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+
+function component(width, height, color, x, y, type) {
+    this.type = type;
+    this.score = 0;
+    this.width = width;
+    this.height = height;
+    this.speedX = 0.4;
+    this.speedY = 0;
+    this.x = x;
+    this.y = y;
+    this.gravity = 0;
+    this.gravitySpeed = 0;
+    this.update = function() {
+        ctx = myGameArea.context;
+        if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.arc(pos.x, pos.y, 20, 0, Math.PI * 2);
+        }
+    }
+    this.newPos = function() {
+        this.gravitySpeed += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY + this.gravitySpeed;
+        this.width = 10 + (myHolders / 25000 );
+        this.height = 10 + (myHolders / 25000 );
+        this.hitBottom();
+    }
+    this.hitBottom = function() {
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom) {
+            this.y = rockbottom;
+            this.gravitySpeed = 0;
+        }
+    }
+    this.crashWith = function() {
+        var myleft = this.x;
+        var mycenter = this.x + (this.width / 2);
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var arenaright = 480;
+        var arenatop = 0;
+        var crash = true;
+        if ((mycenter < arenaright)) {
+            crash = false;
+        }
+        return crash;
+    }
+}
+
+function selectMemcoin() {
+    document.getElementById("myCoin").value = myMemecoinOptions[random];
+}
+
+
+function updateGameArea() {
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+
+    if (myGamePiece.crashWith()) {
+        return;
+    }
+
+    myGameArea.clear();
+    myGameArea.frameNo += 1;
+
+    ctx = myGameArea.context;
+    // grid
+    ctx.font = "12px Arial";
+    for (let x = 40; x < myGameArea.canvas.width; x += 40) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, myGameArea.canvas.height);
+        i = x/40 -1
+        ctx.fillText(xLabelArray[i]+"h",x-6,265);
+    }
+    for (let y = 27; y < myGameArea.canvas.height; y += 27) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(myGameArea.canvas.width, y);
+        i = y/27 -1
+        ctx.fillText("$"+yLabelArray[i],2,y-2);
+    }
+    ctx.strokeStyle = "#dadada";
+    ctx.stroke();
+    // trail
+    trail.forEach((pos, index) => {
+    ctx.beginPath();
+    ctx.fillStyle = `#322449`;
+    const size = 2;
+    ctx.arc(pos.x, pos.y, size/2, 0, Math.PI * 2);
+    ctx.fill();
+    });
+    myScore.text="PRICE: $" + (Number((260 - myGamePiece.y) * 4).toFixed(2)) + " (MAX: $" + Number(Math.max(...pricehist)) + ")";
+    myHolderCount.text="INVESTORS: " + (myHolders) + ", INFLOW: " + formatter.format(inflows);
+    myProfitCount.text="PROFIT: " + (formatter.format(myProfit));
+    // myFrame.text="FRAME: " + (myGameArea.frameNo);
+    myScore.update();
+    myHolderCount.update();
+    myProfitCount.update();
+    // myFrame.update();
+    pricehist.push(Number((260 - myGamePiece.y) * 4).toFixed(2));
+    trail.push({x:myGamePiece.x, y:myGamePiece.y + (myGamePiece.width / 2)});
+    myGamePiece.newPos();
+    myGamePiece.update();
+}
+
+function updateTrail() {
+    ctx = myGameArea.context
+    trail.forEach((pos, index) => {
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(255, 0, 255)`;
+    const size = 10;
+    ctx.arc(pos.x, pos.y, size/2, 0, Math.PI * 2);
+    ctx.fill();
+    });
+}
+
+function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+}
+
+function accelerate(n) {
+    myGamePiece.gravity = n;
+}
+
+function pumpbutton(n) {
+    myGamePiece.gravity = n;
+}
+
+function promotebutton(n) {
+    myGamePiece.gravity = n;
+    holders_add = getRandomInt(100,20000)
+    myHolders += holders_add;
+    inflows += holders_add * Number((260 - myGamePiece.y) * 4).toFixed(2)
+    // <!-- chance of influencer boost 1/50 -->
+}
+
+function liquidate() {
+    myProfit = (Number((250 - myGamePiece.y) * 4).toFixed(2)) * (myHolders / 10)
+    myGamePiece.gravity = 0.9;
+}
+
+function resetgame() {
+    myScore = new component("20px", "Consolas", "black", 10, 240, "text");
+    myGameArea.clear();
+    myGameArea.start();
+}
+
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+</script>
+<br>
+<button class="pump-button" onmousedown="pumpbutton(-0.022)" onmouseup="accelerate(0.017)"></button>
+<!-- <button onmouseup="pumpbutton(-0.0005)">"PUMP"!</button> -->
+
+<!-- chance of influencer boost 1/50 -->
+<button class="promo-button" onmousedown="promotebutton(-0.019)" onmouseup="accelerate(0.017)"></button>
+<!-- <button onmouseup="promotebutton(-0.0005)">PROMOTE!</button> -->
+<button class="dump-button" onmouseup="liquidate()"></button>
+
+
+<!-- <button onmouseup="startGame()"><img src="/assets/TVNFlogo.jpg" width="100"></button> -->
+<!-- Coin: <input type="text" id="myCoin" value="-"> -->
+
+</body>
+</html>
