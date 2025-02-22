@@ -306,7 +306,7 @@ function updateGameArea() {
     ctx.arc(pos.x, pos.y, size/2, 0, Math.PI * 2);
     ctx.fill();
     });
-    myScore.text="PRICE: $" + (Number((260 - myGamePiece.y) * 4).toFixed(2)) + " (MAX: $" + Number(Math.max(...pricehist)) + ")";
+    myScore.text="PRICE: $" + (Number((270 - myGamePiece.y) * 3.70).toFixed(2)) + " (MAX: $" + Number(Math.max(...pricehist)) + ")";
     myHolderCount.text="INVESTORS: " + (myHolders) + ", INFLOW: " + formatter.format(inflows);
     myProfitCount.text="PROFIT: " + (formatter.format(myProfit));
     // myFrame.text="FRAME: " + (myGameArea.frameNo);
@@ -314,7 +314,7 @@ function updateGameArea() {
     myHolderCount.update();
     myProfitCount.update();
     // myFrame.update();
-    pricehist.push(Number((260 - myGamePiece.y) * 4).toFixed(2));
+    pricehist.push(Number((270 - myGamePiece.y) * 3.7).toFixed(2));
     trail.push({x:myGamePiece.x, y:myGamePiece.y + (myGamePiece.width / 2)});
     myGamePiece.newPos();
     myGamePiece.update();
@@ -391,11 +391,23 @@ window.onclick = function(event) {
 
 </script>
 <br>
-<button class="pump-button" onmousedown="pumpbutton(-0.022)" onmouseup="accelerate(0.017)"></button>
+<button class="pump-button"
+    onmousedown="pumpbutton(-0.019)"
+    onmouseup="accelerate(0.017)"
+    ontouchstart="pumpbutton(-0.019); event.preventDefault()"
+    ontouchend="accelerate(0.017); event.preventDefault()">
+</button><!-- <button class="pump-button" onmousedown="pumpbutton(-0.022)" onmouseup="accelerate(0.017)"></button> -->
 <!-- <button onmouseup="pumpbutton(-0.0005)">"PUMP"!</button> -->
 
 <!-- chance of influencer boost 1/50 -->
-<button class="promo-button" onmousedown="promotebutton(-0.019)" onmouseup="accelerate(0.017)"></button>
+<!-- <button class="promo-button" onmousedown="promotebutton(-0.019)" onmouseup="accelerate(0.017)"></button> -->
+
+<button class="promo-button"
+    onmousedown="promotebutton(-0.019)"
+    onmouseup="accelerate(0.017)"
+    ontouchstart="promotebutton(-0.019); event.preventDefault()"
+    ontouchend="accelerate(0.017); event.preventDefault()">
+</button>
 <!-- <button onmouseup="promotebutton(-0.0005)">PROMOTE!</button> -->
 <button class="dump-button" onmouseup="liquidate()"></button>
 
