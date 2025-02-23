@@ -25,8 +25,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
+  text-align: center;
+  color: #322449;
+  padding: 5px;
+  border: 5px solid #322449;
   width: 80%;
 }
 
@@ -100,7 +102,7 @@ canvas {
          cursor: pointer;
       }
 .txtfmt {
-    font-size: "16px";
+    font-size: "50px";
     font: "Arial";
     color: "#322449";
 }
@@ -118,12 +120,18 @@ canvas {
     <!-- Modal content -->
     <div class="modal-content">
       <span class="close">&times;</span>
+      <p><img src="/assets/memelogo.gif" width="400"></p>
+      <!-- <h1>MEMECOIN TYCOON 2K25</h1> -->
+      <p>Understand Memecoins in under 1 minute</p>
+      <p>⚠️ Educational only, not an endorsement of Memecoins ⚠️</p>
       <p><button class="gencoin-button" onmouseup="GenerateCoin()" ></button>
+        <p class="txtfmt"><input class="txtfmt" type="text" id="myCoin" value="-"></p>
+        <p>You have minted a new coin and allocated all supply to yourself prior to announcing it publicly.</p>
+        <p>Now you have just 12 hours before the community moves on to launch the coin, attract investors and sell out!</p>
+        <p>CONTROLS: Click PUMP to boost price by trading with yourself, click PROMOTE tolast your coin across socials and attract investors, click DUMP to sell your holdings to take profit, leaving your investors with a much lower price
+        </p>
         <br>
-        <br>
-        <p class="txtfmt">Coin: <input class="txtfmt" type="text" id="myCoin" value="-"></p>
-        <br>
-        <br>
+
         <button class="launch-button" id="launchCoin" onmouseup="startGame()" ></button>
       </p>
     </div>
@@ -409,7 +417,10 @@ window.onclick = function(event) {
     ontouchend="accelerate(0.017); event.preventDefault()">
 </button>
 <!-- <button onmouseup="promotebutton(-0.0005)">PROMOTE!</button> -->
-<button class="dump-button" onmouseup="liquidate()"></button>
+<button class="dump-button"
+    onmouseup="liquidate()"
+    ontouchend="liquidate(); event.preventDefault()">
+</button>
 
 
 <!-- <button onmouseup="startGame()"><img src="/assets/TVNFlogo.jpg" width="100"></button> -->
