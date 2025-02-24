@@ -55,7 +55,7 @@ canvas {
 .gencoin-button {
          width: 154px;
          height: 62px;
-         background-image: url('/assets/Gencoin.png');
+         background-image: url("../assets/Gencoin.png");
          background-size: cover;
          background-color: #ffffff;
          border: none;
@@ -65,7 +65,7 @@ canvas {
 .launch-button {
          width: 154px;
          height: 62px;
-         background-image: url('/assets/Launch.png');
+         background-image: url("../assets/Launch.png");
          background-size: cover;
          background-color: #ffffff;
          border: none;
@@ -75,7 +75,7 @@ canvas {
 .pump-button {
          width: 154px;
          height: 62px;
-         background-image: url('/assets/Pump.png');
+         background-image: url("../assets/Pump.png");
          background-size: cover;
          background-color: #ffffff;
          border: none;
@@ -85,7 +85,7 @@ canvas {
 .promo-button {
          width: 154px;
          height: 62px;
-         background-image: url('/assets/Promo.png');
+         background-image: url("../assets/Promo.png");
          background-size: cover;
          background-color: #ffffff;
          border: none;
@@ -95,7 +95,7 @@ canvas {
 .dump-button {
          width: 154px;
          height: 62px;
-         background-image: url('/assets/Dump.png');
+         background-image: url("../assets/Dump.png");
          background-size: cover;
          background-color: #ffffff;
          border: none;
@@ -120,16 +120,16 @@ canvas {
     <!-- Modal content -->
     <div class="modal-content">
       <span class="close">&times;</span>
-      <p><img src="/assets/memelogo.gif" width="400"></p>
+      <p><img src="../assets/Memelogo.gif" width="400"></p>
       <!-- <h1>MEMECOIN TYCOON 2K25</h1> -->
-      <p>Understand Memecoins in under 1 minute</p>
-      <p>⚠️ Educational only, not an endorsement of Memecoins ⚠️</p>
+      <p>Experience the other side of Memecoins in under a minute</p>
+      <p>⚠️ Not an Endorsement, highlighing some risks of Memecoins ⚠️</p>
       <p><button class="gencoin-button" onmouseup="GenerateCoin()" ></button>
         <p class="txtfmt"><input class="txtfmt" type="text" id="myCoin" value="-"></p>
         <p>You have minted a new coin and allocated all supply to yourself prior to announcing it publicly.</p>
-        <p>Now you have just 12 hours before the community moves on to launch the coin, attract investors and sell out!</p>
+        <p>Now you have just 12 hours to launch a coin, attract investors and sell out!</p>
         <p>CONTROLS: Click PUMP to boost price by trading with yourself, click PROMOTE tolast your coin across socials and attract investors, click DUMP to sell your holdings to take profit, leaving your investors with a much lower price
-        </p>
+        <p>TIPS: PROMOTE has 1% of influencer boost to price & investors but as price gets closer to $1000 the risk of getting sniped increases with each PROMOTE click</p>
         <br>
 
         <button class="launch-button" id="launchCoin" onmouseup="startGame()" ></button>
@@ -147,6 +147,9 @@ var myGamePiece;
 var myHolders = 0;
 var inflows = 0;
 var myProfit = 0;
+var influencerBoosted = false
+var sniped = false
+var dumped = false
 var myScore;
 var myMemecoinOptions = ['¥CHILLSOL', '¥ASSEREUM', '¥MUSTARDANO']
 
@@ -321,6 +324,15 @@ function updateGameArea() {
     myScore.update();
     myHolderCount.update();
     myProfitCount.update();
+    if (influencerBoosted) {
+        InfluencerBoost.update();
+    };
+    if (sniped) {
+        snipedmark.update();
+    };
+    if (dumped) {
+        dumpedmark.update();
+    };
     // myFrame.update();
     pricehist.push(Number((270 - myGamePiece.y) * 3.7).toFixed(2));
     trail.push({x:myGamePiece.x, y:myGamePiece.y + (myGamePiece.width / 2)});
@@ -356,13 +368,32 @@ function promotebutton(n) {
     myGamePiece.gravity = n;
     holders_add = getRandomInt(100,20000)
     myHolders += holders_add;
-    inflows += holders_add * Number((260 - myGamePiece.y) * 4).toFixed(2)
-    // <!-- chance of influencer boost 1/50 -->
+    inflows += holders_add * Number((260 - myGamePiece.y) * 4).toFixed(2);
+    if (Math.random() < 0.01) {
+        myGamePiece.gravity = n*5;
+        holders_add = getRandomInt(10000,40000)
+        myHolders += holders_add;
+        influencerBoosted = true
+        InfluencerBoost = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y, "text");
+        InfluencerBoost.text="INFLUENCER BOOST!";
+        InfluencerBoost.update()
+    }
+    if (Math.random() < (Number((270 - myGamePiece.y) * 3.70).toFixed(2))/50000) {
+        myGamePiece.gravity = 0.9;
+        sniped = true
+        snipedmark = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y, "text");
+        snipedmark.text="SNIPED!";
+        snipedmark.update()
+    }
 }
 
 function liquidate() {
     myProfit = (Number((250 - myGamePiece.y) * 4).toFixed(2)) * (myHolders / 10)
     myGamePiece.gravity = 0.9;
+    dumped = true
+    dumpedmark = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y, "text");
+    dumpedmark.text="DUMP!";
+    dumpedmark.update()
 }
 
 function resetgame() {
