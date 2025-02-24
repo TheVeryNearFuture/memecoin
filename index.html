@@ -156,6 +156,9 @@ var myMemecoinOptions = ['¥CHILLSOL', '¥ASSEREUM', '¥MUSTARDANO']
 
 const random = Math.floor(Math.random() * myMemecoinOptions.length);
 const trail = [];
+const snipes = [];
+const boosts = [];
+const dumps = [];
 const pricehist = [];
 // var max_of_array = Math.max.apply(Math, pricehist);
 const xLabelArray = Array.from(Array(11), (_, i) => i + 1);
@@ -253,11 +256,19 @@ function component(width, height, color, x, y, type) {
         this.width = 10 + (myHolders / 25000 );
         this.height = 10 + (myHolders / 25000 );
         this.hitBottom();
+        this.hitTop();
     }
     this.hitBottom = function() {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
             this.y = rockbottom;
+            this.gravitySpeed = 0;
+        }
+    }
+    this.hitTop = function() {
+        var tiptop = 0;
+        if (this.y < tiptop) {
+            this.y = tiptop;
             this.gravitySpeed = 0;
         }
     }
@@ -375,7 +386,7 @@ function promotebutton(n) {
         myHolders += holders_add;
         influencerBoosted = true
         InfluencerBoost = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y, "text");
-        InfluencerBoost.text="INFLUENCER BOOST!";
+        InfluencerBoost.text="BOOST!";
         InfluencerBoost.update()
     }
     if (Math.random() < (Number((270 - myGamePiece.y) * 3.70).toFixed(2))/50000) {
