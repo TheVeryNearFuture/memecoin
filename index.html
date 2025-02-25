@@ -206,7 +206,9 @@ const formatter = new Intl.NumberFormat('en-US', {
   trailingZeroDisplay: 'stripIfInteger'
 });
 
-
+// const logoimg = new Image();
+// logoimg.src = "./assets/Memelogo.gif";
+// logoimg.alt = "MemeCoin Tycoon 2K25";
 
 const launchbutton = document.getElementById('launchCoin');
 launchbutton.disabled = !launchready; // Button is disabled when testvar is false
@@ -251,6 +253,7 @@ var myGameArea = {
         this.canvas.height = 270;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        // document.body.insertBefore(logoimg, this.canvas);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
         this.font = 'bold 16px Arial, sans-serif';
@@ -506,7 +509,8 @@ window.onclick = function(event) {
     ontouchend="liquidate(); event.preventDefault()">
 </button>
 <br>
-<p class="txtfmt"> ◎ Find <i>TheVeryNearFuture</i> Comics @ <a class="linkfmt" href="http://theverynearfuture.com/">Web</a> - <a class="linkfmt" href="https://twitter.com/tvnfcomic">X</a> - <a class="linkfmt" href="https://instagram.com/theverynearfuture/">Instagram</a></p>
+<br>
+<p class="linkfmt"> <a class="linkfmt" href="javascript:window.location.reload();"><b>Play Again</b></a> or more <i>TheVeryNearFuture</i> Comics @ <a class="linkfmt" href="http://theverynearfuture.com/">Web</a> - <a class="linkfmt" href="https://twitter.com/tvnfcomic">X</a> - <a class="linkfmt" href="https://instagram.com/theverynearfuture/">Insta</a></p>
 
 
 <!-- <button onmouseup="startGame()"><img src="/assets/TVNFlogo.jpg" width="100"></button> -->
