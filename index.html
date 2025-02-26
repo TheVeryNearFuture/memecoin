@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style>
-
+/* Shout out to W3school https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity */
 body {font-family: Arial, Helvetica, sans-serif;}
 
 /* The Modal (background) */
@@ -62,6 +62,10 @@ canvas {
          cursor: pointer;
       }
 
+.gencoin-button:active {
+    transform: scale(0.95);
+  }
+
 .launch-button {
          width: 154px;
          height: 62px;
@@ -72,6 +76,10 @@ canvas {
          cursor: pointer;
       }
 
+.launch-button:active {
+    transform: scale(0.95);
+  }
+
 .pump-button {
          width: 154px;
          height: 62px;
@@ -81,6 +89,10 @@ canvas {
          border: none;
          cursor: pointer;
       }
+
+.pump-button:active {
+    transform: scale(0.95);
+  }
 
 .inputcoin {
         color: #322449;
@@ -102,6 +114,10 @@ canvas {
          cursor: pointer;
       }
 
+.promo-button:active {
+    transform: scale(0.95);
+  }
+
 .dump-button {
          width: 154px;
          height: 62px;
@@ -112,6 +128,9 @@ canvas {
          cursor: pointer;
       }
 
+.dump-button:active {
+    transform: scale(0.95);
+  }
 .txtfmt {
     font-size: 16px;
     margin-left: 2%;
@@ -134,6 +153,13 @@ canvas {
     color: #322449;
 }
 
+.linkfmtc {
+    font-size: 16px;
+    text-align: center;
+    font: "Arial";
+    color: #322449;
+}
+
 </style>
 </head>
 <body>
@@ -148,23 +174,24 @@ canvas {
     <!-- Modal content -->
     <div class="modal-content">
       <span class="close">&times;</span>
+      <p class="linkfmtc" text-align="center"><i><a class="linkfmt" href="http://theverynearfuture.com/">TheVeryNearFuture</a> Comics Presents:</i></p>
       <p><img src="./assets/Memelogo.gif" width="300"></p>
       <!-- <h1>MEMECOIN TYCOON 2K25</h1> -->
       <p><i>From Launch to Rug-Pull in 60 Seconds</i><br><span class="smlfmt">⚠️Demonstration, not Endorsement⚠️</span></p>
       <p><b>STEP ① </b> Click Below to Generate your Memecoin:</p>
-      <p></p>
       <p><button class="gencoin-button" onmouseup="GenerateCoin()" ></button></p>
         <p><input class="inputcoin" type="text" id="myCoin" value="-"></p>
-        <p></pclass>• 🎉 You've allocated all supply to yourself prior to announcing it publicly.<br>
-            • You have just 12hrs to launch your coin, attract investors then sell out!</p>
+        <p><b>STEP ② </b> Click Button to Launch your Memecoin!</p>
+        <button class="launch-button" id="launchCoin" onmouseup="startGame()" ></button>
+        <p></pclass>🎉 You've allocated all supply to yourself prior to announcing it publicly<br>
+            🕑 You have just 12hrs to launch your coin, attract investors & sell out!</p>
         <p class="txtfmt"><b>🕹 CONTROLS:</b><br>① Rapidly click <b>PUMP</b> to inflate the price by trading with yourself<br>
         ② Rapidly click <b>PROMOTE</b> to attract investors & influencers<br>
         ③ Single click <b>DUMP</b> to sell your holdings to take profit, tanking the price</p>
 
-        <b>⚠️WARNING:</b> A higher price will attract <b>SNIPERS</b> to tank it before you
+        <p class="txtfmt"><b>⚠️WARNING:</b> A higher price will attract <b>SNIPERS</b> to tank it before you
         </p>
-        <p><b>STEP ② </b> Click Button to Launch your Memecoin!</p>
-        <button class="launch-button" id="launchCoin" onmouseup="startGame()" ></button>
+
       </p>
     </div>
   </div>
@@ -185,10 +212,10 @@ var dumped = false
 var launchready = false
 var myCoinName = ""
 var myScore;
-var myMemecoinOptions = ['¥CHILLSOL', '¥ASSEREUM', '¥MUSTARDANO']
+var myMemecoinOptions = ['¥CHILLSOL', '¥ASSEREUM', '¥MUSTARDANO', '¥HODLANA']
 
 
-const random = Math.floor(Math.random() * myMemecoinOptions.length);
+// const random = Math.floor(Math.random() * myMemecoinOptions.length);
 const trail = [];
 const snipes = [];
 const boosts = [];
@@ -327,6 +354,7 @@ function component(width, height, color, x, y, type) {
 }
 
 function selectMemecoin() {
+    random = Math.floor(Math.random() * myMemecoinOptions.length);
     document.getElementById("myCoin").value = myMemecoinOptions[random];
     myCoinName = document.getElementById("myCoin").value
 }
@@ -424,14 +452,14 @@ function promotebutton(n) {
         holders_add = getRandomInt(10000,40000)
         myHolders += holders_add;
         influencerBoosted = true
-        InfluencerBoost = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y, "text");
+        InfluencerBoost = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y+10, "text");
         InfluencerBoost.text="BOOST!";
         InfluencerBoost.update()
     }
     if ((Math.random() < (Number((270 - myGamePiece.y) * 3.70).toFixed(2))/50000) && (sniped == false)) {
         myGamePiece.gravity = 0.9;
         sniped = true
-        snipedmark = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y, "text");
+        snipedmark = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y+10, "text");
         snipedmark.text="SNIPED!";
         snipedmark.update()
     }
@@ -441,7 +469,7 @@ function dump() {
     myProfit = (Number((250 - myGamePiece.y) * 4).toFixed(2)) * (myHolders / 10)
     myGamePiece.gravity = 0.9;
     dumped = true
-    dumpedmark = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y, "text");
+    dumpedmark = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y+10, "text");
     dumpedmark.text="DUMP!";
     dumpedmark.update()
     disableBtn()
@@ -508,9 +536,14 @@ window.onclick = function(event) {
     onmouseup="dump()"
     ontouchend="liquidate(); event.preventDefault()">
 </button>
-<br>
-<br>
-<p class="linkfmt"> <a class="linkfmt" href="javascript:window.location.reload();"><b>Play Again</b></a> or more <i>TheVeryNearFuture</i> Comics @ <a class="linkfmt" href="http://theverynearfuture.com/">Web</a> - <a class="linkfmt" href="https://twitter.com/tvnfcomic">X</a> - <a class="linkfmt" href="https://instagram.com/theverynearfuture/">Insta</a></p>
+<p class="txtfmt"><b>🕹 CONTROLS:</b><br>① Rapidly click <b>PUMP</b> to inflate the price by trading with yourself<br>
+    ② Rapidly click <b>PROMOTE</b> to attract investors & influencers<br>
+    ③ Single click <b>DUMP</b> to sell your holdings to take profit, tanking the price</p>
+
+    <p class="txtfmt"><b>⚠️WARNING:</b> A higher price will attract <b>SNIPERS</b> to tank it before you
+    </p>
+
+<p class="linkfmt"> <a class="linkfmt" href="javascript:window.location.reload();"><b>Play Again</b></a> or check <i>TheVeryNearFuture</i> Comics @ <a class="linkfmt" href="http://theverynearfuture.com/">Web</a> - <a class="linkfmt" href="https://twitter.com/tvnfcomic">X</a> - <a class="linkfmt" href="https://instagram.com/theverynearfuture/">Insta</a></p>
 
 
 <!-- <button onmouseup="startGame()"><img src="/assets/TVNFlogo.jpg" width="100"></button> -->
