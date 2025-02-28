@@ -160,9 +160,18 @@ canvas {
     color: #322449;
 }
 
+.bgclass {
+    background-color: #ffffff;
+}
+
+body * {
+  background-color: #ffffff;
+}
+
 </style>
 </head>
 <body>
+<div class="bgclass">
 <!-- <body onload="startGame()"> -->
 <br>
 <!-- Trigger/Open The Modal -->
@@ -187,7 +196,7 @@ canvas {
             🕑 You have just 12hrs to launch your coin, attract investors & sell out!</p>
         <p class="txtfmt"><b>🕹 CONTROLS:</b><br>① Rapidly click <b>PUMP</b> to inflate the price by trading with yourself<br>
         ② Rapidly click <b>PROMOTE</b> to attract investors & influencers<br>
-        ③ Single click <b>DUMP</b> to sell your holdings to take profit, tanking the price</p>
+        ③ Click <b>DUMP</b> to sell your holdings to take profit, tanking the price</p>
 
         <p class="txtfmt"><b>⚠️WARNING:</b> A higher price will attract <b>SNIPERS</b> to tank it before you
         </p>
@@ -242,7 +251,9 @@ launchbutton.disabled = !launchready; // Button is disabled when testvar is fals
 
 // Example of toggling testvar and updating button state
 function toggleLaunchButton() {
-    launchready = !launchready;
+    if (launchready == false) {
+        launchready = true
+        }
     launchbutton.disabled = !launchready;
 }
 
@@ -472,7 +483,6 @@ function dump() {
     dumpedmark = new component("10px", "Arial", "#322449", myGamePiece.x, myGamePiece.y+10, "text");
     dumpedmark.text="DUMP!";
     dumpedmark.update()
-    disableBtn()
 }
 
 function resetgame() {
@@ -512,6 +522,7 @@ window.onclick = function(event) {
 }
 
 </script>
+
 <br>
 <button class="pump-button"
     onmousedown="pumpbutton(-0.019)"
@@ -548,6 +559,6 @@ window.onclick = function(event) {
 
 <!-- <button onmouseup="startGame()"><img src="/assets/TVNFlogo.jpg" width="100"></button> -->
 <!-- Coin: <input type="text" id="myCoin" value="-"> -->
-
+</div>
 </body>
 </html>
