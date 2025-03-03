@@ -48,6 +48,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 canvas {
+    max-width: 100%;
     border:5px solid #322449;
     background-color: #ffffff
 }
@@ -131,6 +132,10 @@ canvas {
 .dump-button:active {
     transform: scale(0.95);
   }
+
+.playbtns {
+    max-width: 100%;
+}
 .txtfmt {
     font-size: 16px;
     margin-left: 2%;
@@ -164,8 +169,14 @@ canvas {
     background-color: #ffffff;
 }
 
-body * {
-  background-color: #ffffff;
+body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: white;
 }
 
 </style>
@@ -524,6 +535,7 @@ window.onclick = function(event) {
 </script>
 
 <br>
+<div class="playbtns">
 <button class="pump-button"
     onmousedown="pumpbutton(-0.019)"
     onmouseup="accelerate(0.017)"
@@ -547,6 +559,7 @@ window.onclick = function(event) {
     onmouseup="dump()"
     ontouchend="liquidate(); event.preventDefault()">
 </button>
+</div>
 <p class="txtfmt"><b>🕹 CONTROLS:</b><br>① Rapidly click <b>PUMP</b> to inflate the price by trading with yourself<br>
     ② Rapidly click <b>PROMOTE</b> to attract investors & influencers<br>
     ③ Single click <b>DUMP</b> to sell your holdings to take profit, tanking the price</p>
